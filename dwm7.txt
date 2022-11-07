@@ -1,0 +1,54 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.cluster import KMeans
+
+
+from google.colab import files
+uploaded = files.upload()
+
+
+import pandas as pd
+import io
+
+df = pd.read_csv(io.BytesIO(uploaded['index_dim.csv'])) //insert your own csv file
+print(df)
+
+df = pd.read_csv(io.BytesIO(uploaded['index_dim.csv'])) 
+print(df)
+
+import matplotlib.pyplot as plt
+
+plt.scatter(df.humidity, df.pressure)
+plt.title('Wheather')
+plt.xlabel('humidity')
+plt.ylabel('pressure')
+plt.show()
+
+km = KMeans(n_clusters=3)
+y_predicted = km.fit_predict(df[['humidity','pressure']])
+y_predicted
+
+df['cluster']=y_predicted
+df.head()
+
+df1 = df[df.cluster==0]
+df2 = df[df.cluster==1]
+df3 = df[df.cluster==2]
+plt.scatter(df1.pressure,df1.humidity,color='green')
+plt.scatter(df2.pressure,df2.humidity,color='red')
+plt.scatter(df3.pressure,df3.humidity,color='black')
+plt.scatter(km.cluster_centers_[:,0],km.cluster_centers_[:,1],color='purple',marker='*',label='centroid')
+plt.xlabel('humidity')
+plt.ylabel('pressure')
+plt.legend
+
+from sklearn.preprocessing import MinMaxScaler
+scaler = MinMaxScaler()
+scaler.fit(df[['humidity']])
+df['humidity'] = scaler.transform(df[['humidity']])
+scaler.fit(df[['pressure']])
+df['pressure'] = scaler.transform(df[['pressure']])
+df.head()
+
+plt.scatter(df.humidity,df.pressure)
